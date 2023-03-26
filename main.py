@@ -1,5 +1,7 @@
 import requests
-from datetime import datetime, timedelta
+import datetime
+import sqlite3
+
 
 # Define the repository name and owner
 repo_name = "pulsar"
@@ -9,8 +11,8 @@ owner_name = "Exein-io"
 api_endpoint = f"https://api.github.com/repos/{owner_name}/{repo_name}"
 
 # Define the date range for the issues and pull requests
-end_date = datetime.utcnow()
-start_date = end_date - timedelta(days=30)
+end_date = datetime.datetime.utcnow()
+start_date = end_date - datetime.timedelta(days=30)
 start_date_str = start_date.strftime("%Y-%m-%dT%H:%M:%SZ")
 end_date_str = end_date.strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -57,3 +59,17 @@ print(f"Number of contributors: {num_contributors}")
 print(f"Number of issues opened in the last month: {num_issues_opened}")
 print(f"Number of issues closed in the last month: {num_issues_closed}")
 print(f"Number of pull requests merged in the last month: {num_pull_requests_merged}")
+
+# insert the metrics into the database
+date = datetime.date.today().strftime('%Y-%m-%d')
+conn = sqlite3.connect('github_metrics.db')
+c = conn.cursor()
+
+c.execute('''INSERT OR IGNORE INTO metrics(date, stars, forks, subscribers, contributors, 
+                                             issues_opened, issues_closed, pr_merged, forks_to_stars_ratio) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+            (date, num_stars, num_forks, num_subscribers, num_contributors, 
+             num_issues_opened, num_issues_closed, num_pull_requests_merged, forks_to_stars_ratio))
+
+conn.commit()
+conn.close()
