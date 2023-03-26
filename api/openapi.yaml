@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: GitHub Metrics API
+  version: 1.0.0
+paths:
+  /stars:
+    get:
+      summary: Get the number of stars for a given date range
+      parameters:
+        - name: start_date
+          in: query
+          description: The start date of the date range in the format YYYY-MM-DD
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: The end date of the date range in the format YYYY-MM-DD
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                    description: The date of the metric
+                  value:
+                    type: integer
+                    description: The number of stars for the given date
+    servers:
+      - url: http://example.com/api/v1
+  /forks:
+    get:
+      summary: Get the number of forks for a given date range
+      parameters:
+        - name: start_date
+          in: query
+          description: The start date of the date range in the format YYYY-MM-DD
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: The end date of the date range in the format YYYY-MM-DD
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                    description: The date of the metric
+                  value:
+                    type: integer
+                    description: The number of forks for the given date
+    servers:
+      - url: http://example.com/api/v1
+  /subscribers:
+    get:
+      summary: Get the number of subscribers for a given date range
+      parameters:
+        - name: start_date
+          in: query
+          description: The start date of the date range in the format YYYY-MM-DD
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: The end date of the date range in the format YYYY-MM-DD
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                    description: The date of the metric
+                  value:
+                    type: integer
+                    description: The number of subscribers for the given date
+    servers:
+      - url: http://example.com/api/v1
+
