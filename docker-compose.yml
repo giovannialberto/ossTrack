@@ -12,4 +12,11 @@ services:
     build: ./scripts
     volumes:
       - ./data:/app/data
+    
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "8050:8050"
+    volumes:
+      - ./data:/app/data
 
