@@ -1,4 +1,5 @@
 import os
+import argparse
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -6,17 +7,25 @@ import pandas as pd
 import plotly.graph_objs as go
 import sqlite3
 
+
+# Create the Dash app
+app = dash.Dash(__name__)
+
+# Define command-line arguments
+parser = argparse.ArgumentParser(description='Run the Dash app with a database URL')
+parser.add_argument('--database-url', type=str, default='data/github_metrics.db',
+                    help='The URL of the SQLite database')
+
+# Parse command-line arguments
+args = parser.parse_args()
+
 # Connect to the SQLite database and retrieve the data
-DATABASE_URL = os.environ.get('DATABASE_URL')
-conn = sqlite3.connect(DATABASE_URL)
+conn = sqlite3.connect(args.database_url)
 df = pd.read_sql_query("SELECT * FROM metrics WHERE date >= DATE('now', '-30 days')", conn)
 conn.close()
 
 # Convert the 'date' column to a pandas datetime object
 df['date'] = pd.to_datetime(df['date'])
-
-# Create the Dash app
-app = dash.Dash(__name__)
 
 # Define the layout
 app.layout = html.Div(children=[

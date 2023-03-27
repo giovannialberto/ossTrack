@@ -25,3 +25,14 @@ To run the docker compose, use:
 ```
 docker-compose up
 ```
+
+## Fetch metrics script
+### Python
+To run with python:
+```
+python3 scripts/fetch_metrics.py
+```
+
+### Docker
+To run with docker:
+

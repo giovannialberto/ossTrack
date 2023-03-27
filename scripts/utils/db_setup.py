@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('github_metrics.db')
+conn = sqlite3.connect('data/github_metrics.db')
 c = conn.cursor()
 
 c.execute('''CREATE TABLE IF NOT EXISTS metrics

@@ -10,9 +10,6 @@ parser = argparse.ArgumentParser(description='Run the Flask app with a database 
 parser.add_argument('--database-url', type=str, default='data/github_metrics.db',
                     help='The URL of the SQLite database')
 
-# Define the repository name and owner
-repo_name = "pulsar"
-owner_name = "Exein-io"
 
 def fetch_github(owner_name, repo_name):
     # Define the GitHub API endpoint
@@ -89,6 +86,10 @@ if __name__ == '__main__':
     # Parse command-line arguments
     args = parser.parse_args()
 
+    # Define the repository name and owner
+    repo_name = "pulsar"
+    owner_name = "Exein-io"
+
     # fetch the latest metrics
     metrics = fetch_github(owner_name=owner_name, repo_name=repo_name)
 
@@ -101,9 +102,8 @@ if __name__ == '__main__':
     c.execute('''INSERT OR IGNORE INTO metrics(date, stars, forks, subscribers, contributors, 
                                             issues_opened, issues_closed, pr_merged, forks_to_stars_ratio) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
-            (metrics.get("date"), metrics.get("num_stars"), metrics.get("num_forks"), metrics.get("num_subscribers"), metrics.get("num_contributors"), 
+            (date, metrics.get("num_stars"), metrics.get("num_forks"), metrics.get("num_subscribers"), metrics.get("num_contributors"), 
              metrics.get("num_issues_opened"), metrics.get("num_issues_closed"), metrics.get("num_pull_requests_merged"), metrics.get("forks_to_stars_ratio")))
-
 
     conn.commit()
     conn.close()

@@ -7,4 +7,9 @@ services:
       - "5000:5000"
     volumes:
       - ./data:/app/data
+  
+  fetch:
+    build: ./scripts
+    volumes:
+      - ./data:/app/data
 
