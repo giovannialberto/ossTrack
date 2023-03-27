@@ -1,3 +1,4 @@
+import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -6,7 +7,8 @@ import plotly.graph_objs as go
 import sqlite3
 
 # Connect to the SQLite database and retrieve the data
-conn = sqlite3.connect('github_metrics.db')
+DATABASE_URL = os.environ.get('DATABASE_URL')
+conn = sqlite3.connect(DATABASE_URL)
 df = pd.read_sql_query("SELECT * FROM metrics WHERE date >= DATE('now', '-30 days')", conn)
 conn.close()
 
@@ -151,4 +153,4 @@ app.layout = html.Div(children=[
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=False, port=8050)
