@@ -86,9 +86,9 @@ if __name__ == '__main__':
     # Parse command-line arguments
     args = parser.parse_args()
 
-    # Define the repository name and owner
-    repo_name = "pulsar"
-    owner_name = "Exein-io"
+    # Get the repository name and owner
+    repo_name = os.environ.get('REPO_NAME', 'pulsar')
+    owner_name = os.environ.get('OWNER_NAME', 'Exein-io')
 
     # fetch the latest metrics
     metrics = fetch_github(owner_name=owner_name, repo_name=repo_name)

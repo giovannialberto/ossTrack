@@ -12,6 +12,9 @@ services:
     build: ./scripts
     volumes:
       - ./data:/app/data
+    environment:
+      - REPO_NAME=pulsar
+      - OWNER_NAME=Exein-io
     
   dashboard:
     build: ./dashboard
