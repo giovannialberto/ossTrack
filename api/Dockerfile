@@ -15,7 +15,7 @@ COPY app.py .
 COPY openapi.yaml .
 
 # Expose the port where the Flask app will run
-EXPOSE 5000
+EXPOSE 8080
 
 # Start the Flask app when the container starts
 CMD ["python", "app.py", "--database-url", "data/github_metrics.db"]

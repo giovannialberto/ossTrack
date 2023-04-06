@@ -5,7 +5,7 @@ A simple monitor tool for keeping track of important OSS metrics evolution throu
 The tool consists of three main services:
 
 - a [fetch](./scripts/fetch_metrics.py) service: a simple script that collects all the latest metrics from the GitHub API and stores it in a local [database](./data/)
-- a Rest [API](./api/) (port `5000`): lets you query each metric and export it for further custom visualizations
+- a Rest [API](./api/) (port `8080`): lets you query each metric and export it for further custom visualizations
 - a Web [Dashboard](./dashboard/) (port `8050`): lets you easily visualize all the metrics fetched so far
 
 ## Usage
