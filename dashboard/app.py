@@ -3,8 +3,10 @@ import argparse
 import dash
 from dash import html, dcc
 import pandas as pd
+from pandas.errors import DatabaseError
 import plotly.graph_objs as go
 import sqlite3
+import time
 
 
 # Create the Dash app
@@ -18,10 +20,25 @@ parser.add_argument('--database-url', type=str, default='data/github_metrics.db'
 # Parse command-line arguments
 args = parser.parse_args()
 
-# Connect to the SQLite database and retrieve the data
-conn = sqlite3.connect(args.database_url)
-df = pd.read_sql_query("SELECT * FROM metrics WHERE date >= DATE('now', '-30 days')", conn)
-conn.close()
+max_retries = 5
+retry_interval_secs = 1
+
+for i in range(max_retries):
+    try:
+        # Connect to the SQLite database and retrieve the data
+        conn = sqlite3.connect(args.database_url)
+        df = pd.read_sql_query("SELECT * FROM metrics WHERE date >= DATE('now', '-30 days')", conn)
+        conn.close()
+        break
+    except DatabaseError as e:
+        if "no such table" in str(e):
+            if i < max_retries - 1:
+                print("Metrics table doesn't exist yet. Retrying in {} seconds...".format(retry_interval_secs))
+                time.sleep(retry_interval_secs)
+            else:
+                raise Exception("Failed to read data from metrics table after {} retries".format(max_retries))
+        else:
+            raise e
 
 # Convert the 'date' column to a pandas datetime object
 df['date'] = pd.to_datetime(df['date'])

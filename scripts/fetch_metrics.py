@@ -98,6 +98,17 @@ if __name__ == '__main__':
     conn = sqlite3.connect(args.database_url)
     c = conn.cursor()
 
+    # Check if the "metrics" table exists
+    c.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='metrics' ''')
+    if c.fetchone()[0] == 0:
+        # Create the "metrics" table if it doesn't exist
+        c.execute('''CREATE TABLE metrics
+                    (date TEXT, stars INTEGER, forks INTEGER, subscribers INTEGER, contributors INTEGER,
+                    issues_opened INTEGER, issues_closed INTEGER, pr_merged INTEGER, forks_to_stars_ratio REAL,
+                    PRIMARY KEY (date))''')
+        conn.commit()
+        print("Created 'metrics' table")
+
     # Insert the computed metrics into the database
     c.execute('''INSERT OR IGNORE INTO metrics(date, stars, forks, subscribers, contributors, 
                                             issues_opened, issues_closed, pr_merged, forks_to_stars_ratio) 
